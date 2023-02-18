@@ -1,0 +1,408 @@
+
+
+
+------------------------------------------TASK 1---------------------------------------------------------
+
+.MODEL SMALL
+.STACK 100H     
+       
+.DATA 
+
+MSG1 DB 'Printing A_Z $'
+nl EQU 0AH  ;Definning Equates
+cr EQU 0DH  ;Definning Equates  
+
+ 
+.CODE
+
+MAIN PROC   
+    MOV AX,@DATA    ;calling all the functionality from data segment in line number 6
+    MOV DS,AX                                                                        
+    
+    MOV AH,9
+    LEA DX,MSG1 ;Showing msg1
+    INT 21H
+            
+    MOV AH,2
+    MOV DL,nl ;new line
+    INT 21H
+    MOV DL,cr
+    INT 21H        
+      
+    MOV CL,26
+    MOV BL,041h      
+    
+    PRINT_LOOP:
+          
+        MOV AH,2
+        MOV DL,BL
+        INT 21H
+        
+        MOV AH,2
+        MOV DL,nl ;new line
+        INT 21H
+        MOV DL,cr
+        INT 21H
+        
+        INC BL
+    
+        DEC CL
+        cmp CL,0
+        JNE PRINT_LOOP
+        
+    
+EXIT:
+    MOV AX,4CH
+    INT 21H 
+    
+    MAIN ENDP
+    END MAIN
+
+
+
+-------------------------------TASK 2(A)----------------------------------------------
+
+
+.MODEL SMALL
+.STACK 100h
+.DATA  
+
+.CODE
+
+MAIN PROC
+
+    MOV AX,@DATA
+    MOV DS,AX
+     
+     
+     
+    MOV ax,-1
+    cmp ax,0
+    JL Condition 
+    jmp EXIT
+    
+    Condition:
+    mov bx,0FFFFH
+   
+        
+Exit:
+    MOV AH,4CH
+    INT 21h
+
+
+    MAIN ENDP
+    END MAIN
+
+
+
+
+
+-------------------------------TASK 2(B)-----------------------------------------------
+
+.MODEL SMALL
+.STACK 100h
+.DATA  
+
+.CODE
+
+MAIN PROC
+
+    MOV AX,@DATA
+    MOV DS,AX
+     
+     
+     
+    MOV al,-1
+    cmp al,0
+    JL Condition 
+    jmp Condition2
+    
+    Condition:
+    mov ah,0FFH
+    jmp EXIT
+    
+    Condition2:
+    mov ah,0H
+    
+   
+        
+Exit:
+    MOV AH,4CH
+    INT 21h
+
+
+    MAIN ENDP
+    END MAIN
+
+
+-------------------------------TASK 2(C)------------------------------------------------
+
+
+.MODEL SMALL
+.STACK 100h
+.DATA
+  
+MSG DB 'o $'       
+MSG2 DB 'e$' 
+
+.CODE
+
+MAIN PROC
+
+    MOV AX,@DATA
+    MOV DS,AX
+     
+     
+     
+    MOV al,2
+    
+    cmp al,1
+    JE Condition
+    cmp al,3
+    JE Condition
+    
+    cmp al,2
+    JE Condition2
+    cmp al,4
+    JE Condition2
+     
+    jmp EXIT
+    
+    Condition:
+    mov ah,9
+    lea dx,MSG 
+    int 21h 
+    jmp EXIT
+    
+    Condition2:
+    mov ah,9
+    lea dx,MSG2 
+    int 21h 
+    jmp EXIT
+    
+   
+        
+Exit:
+    MOV AH,4CH
+    INT 21h
+
+
+    MAIN ENDP
+    END MAIN
+
+
+
+-------------------------------TASK 3---------------------------------------------------
+
+
+.MODEL SMALL
+.STACK 100h
+.DATA                                           
+
+MSG7 DB 0AH,0DH, 'Enter a small letter:$'       
+MSG10 DB 0AH,0DH, 'In Upper letter it is:$' 
+
+.CODE
+
+MAIN PROC
+
+    MOV AX,@DATA
+    MOV DS,AX 
+    
+    mov ah,9
+    lea dx,MSG7 
+    int 21h   
+      
+    mov ah,1
+    int 21h
+    mov bl,al
+        
+    mov ah,9
+    lea dx,MSG10
+    int 21h
+        
+    sub bl,020h
+        
+    mov ah,2
+    mov dl,bl
+    int 21h
+        
+Exit:
+    MOV AH,4CH
+    INT 21h
+
+    MAIN ENDP
+    END MAIN
+
+
+
+
+-----------------------------------TASK 4----------------------------------------------
+
+
+;Take 3 user input And sum them
+
+.MODEL SMALL
+.STACK 100H     
+       
+.DATA 
+
+MSG1 DB '---Enter 3 Numbers--- $'
+MSG2 DB 'First input is: $'
+MSG3 DB 'Second input is: $'
+MSG4 DB 'Third input is: $'
+MSG5 DB 'The summetion is: $'
+nl EQU 0AH  ;Definning Equates
+cr EQU 0DH  ;Definning Equates  
+
+num1 DB ?   ;Definning variable
+num2 DB ?
+num3 DB ?
+ 
+.CODE
+
+MAIN PROC   
+    MOV AX,@DATA    ;calling all the functionality from data segment in line number 6
+    MOV DS,AX                                                                        
+    
+    MOV AH,9
+    LEA DX,MSG1 ;Showing msg1
+    INT 21H
+            
+    MOV AH,2
+    MOV DL,nl ;new line
+    INT 21H
+    MOV DL,cr
+    INT 21H        
+            
+    MOV AH,9
+    LEA DX,MSG2  ;Showing msg2
+    INT 21H
+    MOV AH,1 
+    INT 21H 
+    MOV num1,AL ;Take first input
+        
+    MOV AH,2
+    MOV DL,nl ;new line
+    INT 21H
+    MOV DL,cr
+    INT 21H    
+    
+    MOV AH,9
+    LEA DX,MSG3 ;Showing msg3
+    INT 21H
+    MOV AH,1 
+    INT 21H
+    MOV num2,AL  ;Take second input
+    
+    MOV AH,2
+    MOV DL,nl ;new line
+    INT 21H
+    MOV DL,cr
+    INT 21H
+    
+    MOV AH,9
+    LEA DX,MSG4 ;Showing msg4
+    INT 21H
+    MOV AH,1
+    INT 21H
+    MOV num3,AL  ;Take third input  
+    
+    
+    MOV AH,2
+    MOV DL,nl ;new line
+    INT 21H
+    MOV DL,cr
+    INT 21H 
+    
+    mov BL,num1
+    add BL,num2
+    add BL,num3 
+    add bl,0A0h
+    
+    
+    MOV AH,9
+    LEA DX,MSG5 ;Showing msg5
+    INT 21H  
+    
+    MOV AH,2
+    MOV DL,BL
+    INT 21H
+    
+    
+EXIT:
+    MOV AX,4CH
+    INT 21H 
+    
+    MAIN ENDP
+    END MAIN
+
+
+
+
+
+-------------------------------------TASK 5---------------------------------------------------
+
+
+.MODEL SMALL
+.STACK 100H     
+       
+.DATA 
+
+MSG1 DB 'Name: Abdullah Al Mahadi $'
+MSG2 DB 'ID: 20-42044-1 $'
+MSG3 DB 'Email: mahadi.kaafee@gmail.com $'
+MSG4 DB 'Address: Kuril, Vatara, Dhaka $'
+nl EQU 0AH  ;Definning Equates
+cr EQU 0DH  ;Definning Equates  
+
+ 
+.CODE
+
+MAIN PROC   
+    MOV AX,@DATA    ;calling all the functionality from data segment in line number 6
+    MOV DS,AX                                                                        
+    
+    MOV AH,9
+    LEA DX,MSG1 ;Showing msg1
+    INT 21H
+            
+    MOV AH,2
+    MOV DL,nl ;new line
+    INT 21H
+    MOV DL,cr
+    INT 21H        
+            
+    MOV AH,9
+    LEA DX,MSG2  ;Showing msg2
+    INT 21H
+   
+        
+    MOV AH,2
+    MOV DL,nl ;new line
+    INT 21H
+    MOV DL,cr
+    INT 21H    
+    
+    MOV AH,9
+    LEA DX,MSG3 ;Showing msg3
+    INT 21H
+   
+    
+    MOV AH,2
+    MOV DL,nl ;new line
+    INT 21H
+    MOV DL,cr
+    INT 21H
+    
+    MOV AH,9
+    LEA DX,MSG4 ;Showing msg4
+    INT 21H
+
+    
+EXIT:
+    MOV AX,4CH
+    INT 21H 
+    
+    MAIN ENDP
+    END MAIN
