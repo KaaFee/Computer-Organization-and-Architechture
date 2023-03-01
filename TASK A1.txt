@@ -1,0 +1,65 @@
+.MODEL SMALL
+.STACK 100h
+.DATA
+
+MSG DB 'Please give an INPUT: $'   
+MSG2 DB ' is an upper case letter $'
+MSG3 DB 'ERROR: It is not campital letter $'
+
+.CODE
+
+MAIN PROC
+
+    MOV AX,@DATA
+    MOV DS,AX
+    
+    mov ah,9     ;User interface
+    lea dx,MSG
+    int 21h
+    
+    mov ah,1
+    int 21h
+    mov bl,al 
+    
+    MOV AH,2
+    MOV DL,0Ah ;new line
+    INT 21H
+    MOV DL,0Dh
+    INT 21H
+    
+    cmp bl,041h
+    jge UPPER
+    jmp ERROR
+          
+    UPPER:
+        cmp bl,05Bh
+        jge ERROR
+          
+        mov ah,2
+        mov dl,bl
+        int 21h
+          
+        mov ah,9     ;User interface
+        lea dx,MSG2
+        int 21h
+        
+        jmp Exit
+             
+          
+    ERROR: 
+        mov ah,9     ;User interface
+        lea dx,MSG3
+        int 21h 
+        
+        jmp Exit
+    
+
+Exit:
+    MOV AH,4CH
+    INT 21h
+
+
+    MAIN ENDP
+    END MAIN
+
+
