@@ -1,2 +1,2 @@
 # Computer-Organization-and-Architechture
-This repo is for my COA course. I will upload lab task here
+This repository contains all the lab tasks and course materials for the Computer Organization and Architecture course.
